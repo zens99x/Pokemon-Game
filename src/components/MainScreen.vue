@@ -26,8 +26,8 @@
 <script>
 export default {
   methods: {
-    onStart(totalOfBlock) {
-      this.$emit("onStart", { totalOfBlock });
+    onStart(totalOfBlocks) {
+      this.$emit("onStart", { totalOfBlocks });
     },
   },
 };
