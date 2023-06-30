@@ -1,12 +1,37 @@
 <template>
-  <div class="card">
+  <div
+    class="card"
+    :class="{ disabled: isDisabled }"
+    :style="{
+      height: `${(920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16}px`,
+      width: `${
+        (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4
+      }px`,
+      perspective: `${
+        ((((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) / 4) * 2
+      }px`,
+    }"
+  >
     <div
       class="card__inner"
       :class="{ 'is-flipped': isFlipped }"
       @click="onToggleFlipCard"
     >
       <div class="card__face card__face--front">
-        <div class="card__content"></div>
+        <div
+          class="card__content"
+          :style="{
+            backgroundSize: `${
+              (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) /
+              4 /
+              3
+            }px ${
+              (((920 - 16 * 4) / Math.sqrt(cardsContext.length) - 16) * 3) /
+              4 /
+              3
+            }px`,
+          }"
+        ></div>
       </div>
       <div class="card__face card__face--back">
         <div
@@ -23,19 +48,38 @@
 <script>
 export default {
   props: {
+    card: {
+      type: [String, Array, Number, Object],
+    },
     imgBackFaceUrl: {
       type: String,
       required: true,
+    },
+    cardsContext: {
+      type: Array,
+      default: function () {
+        return [];
+      },
     },
   },
   data() {
     return {
       isFlipped: false,
+      isDisabled: false,
     };
   },
   methods: {
     onToggleFlipCard() {
+      if (this.isDisabled) return false;
+
       this.isFlipped = !this.isFlipped;
+      if (this.isFlipped) this.$emit("onFlip", this.card);
+    },
+    onFlipBackCard() {
+      this.isFlipped = false;
+    },
+    onEnabled() {
+      this.isDisabled = true;
     },
   },
 };
@@ -45,8 +89,6 @@ export default {
 .card {
   display: inline-block;
   margin: 0 1rem 1rem 0;
-  width: 90px;
-  height: 120px;
 }
 
 .card__inner {
@@ -75,7 +117,6 @@ export default {
 
 .card__face--front .card__content {
   background: url("../assets/images/icon_back.png") no-repeat center center;
-  background-size: 40px 40px;
   height: 100%;
   width: 100%;
 }
@@ -90,5 +131,10 @@ export default {
 .card__face--back {
   background-color: var(--light);
   transform: rotateY(-180deg);
+}
+
+.card.disabled .card__inner {
+  /* display: none; */
+  cursor: default;
 }
 </style>

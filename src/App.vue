@@ -6,27 +6,39 @@
   <interact-screen
     v-if="statusMatch === 'match'"
     :cardsContext="settings.cardsContext"
+    @onFinish="onGetResult"
   />
-  <!-- <result-screen />
-  <copy-right-screen /> -->
+  <result-screen
+    v-if="statusMatch === 'result'"
+    :timer="timer"
+    @startAgain="statusMatch = 'default'"
+  />
+  <!-- <copy-right-screen /> -->
 </template>
 
 <script>
 import MainScreen from "./components/MainScreen.vue";
 import InteractScreen from "./components/InteractScreen.vue";
 // import CopyRightScreen from "./components/CopyRightScreen.vue";
-// import ResultScreen from "./components/ResultScreen.vue";
+import ResultScreen from "./components/ResultScreen.vue";
 
 import { shuffled } from "./utils/array";
 
 export default {
   name: "App",
+  components: {
+    MainScreen,
+    InteractScreen,
+    // CopyRightScreen,
+    ResultScreen,
+  },
   data() {
     return {
       settings: {
         totalOfBlocks: 0,
         cardsContext: [],
         startedAt: null,
+        timer: 0,
       },
       statusMatch: "default",
     };
@@ -52,12 +64,13 @@ export default {
 
       this.statusMatch = "match";
     },
-  },
-  components: {
-    MainScreen,
-    InteractScreen,
-    // CopyRightScreen,
-    // ResultScreen,
+    onGetResult() {
+      //  Get timer
+      this.timer = new Date().getTime() - this.settings.startedAt;
+
+      // Switch to Result component
+      this.statusMatch = "result";
+    },
   },
 };
 </script>
