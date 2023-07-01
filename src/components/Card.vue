@@ -141,7 +141,7 @@ export default {
 }
 
 .card.disabled .card__inner {
-  /* display: none; */
-  cursor: default;
+  display: none;
+  /* cursor: default; */
 }
 </style>

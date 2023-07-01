@@ -55,14 +55,25 @@ export default {
       ) {
         console.log("dung");
 
-        // setTimeout(() => {
-        // }, 1000);
+        setTimeout(() => {
+          if (
+            this.$refs[`card-${this.rules[0].index}`][0] &&
+            this.$refs[`card-${this.rules[0].index}`][0].onEnabled
+          ) {
+            this.$refs[`card-${this.rules[0].index}`][0].onEnabled();
+          }
+          if (
+            this.$refs[`card-${this.rules[1].index}`][0] &&
+            this.$refs[`card-${this.rules[1].index}`][0].onEnabled
+          ) {
+            this.$refs[`card-${this.rules[1].index}`][0].onEnabled();
+          }
+          this.rules = [];
+        }, 1000);
 
         // Add class disabled to card
-        this.$refs[`card-${this.rules[0].index}`][0].onEnabled();
-        this.$refs[`card-${this.rules[1].index}`][0].onEnabled();
+
         // Reset rules
-        this.rules = [];
 
         const disabledElements = document.querySelectorAll(
           ".screen .card.disabled"
