@@ -17,6 +17,7 @@
         :card="{ index, value: card }"
         :ref="`card-${index}`"
         :cardsContext="cardsContext"
+        :rules="rules"
         @onFlip="checkRule($event)"
       />
     </div>
@@ -99,7 +100,6 @@ export default {
 <style scoped lang="css">
 .screen {
   width: 100%;
-
   position: absolute;
   top: 0;
   left: 0;
